@@ -1,22 +1,19 @@
 /******************************************************************************/
 /*!
   \file   StageManager.h
-  \author Matt Casanova
-  \par    email: mcasanov\@digipen.edu
-  \date   27/12/2011
   \author Yunhyeok Choi
   \par    email: yunhyeokchoi.digipen\@gmail.com
   \date   21/8/2016
   \brief  
-    Interface for the StageManager class which manage all stages in the game,
-    based on the prompted information from the player.
+		Includes interface for the StageManager and enumerations for all
+		available Stages.
 */
 /******************************************************************************/
 #ifndef STAGEMANAGER_H
 #define STAGEMANAGER_H
 
 /*! Enum of all Stage type in the game */
-enum StageType{ST_Unknown, ST_MenuStage};
+enum StageType{ST_NotSet, ST_MenuStage};
 
 /*Forward declaration for the Stage class, 
   so that StageManager can have the variable with the type Stage*.*/
@@ -26,8 +23,9 @@ class Stage;
 /*!
   \class StageManager
 
-  Class used to manage all stages in the game.  
-  Allows users to set the next stage, restart or quit.
+	Interface for the GameManager class which manages
+  #1 registering and creating Window class & updating the Window of the game
+	#2 updating the Stage of the game
 */
 /******************************************************************************/
 class StageManager
@@ -41,18 +39,17 @@ class StageManager
     void Update();
     void Shutdown();
     
-    bool IsQuitting();
-    
     /*These methods can be called inside the methods of,
       usually the Update function, from the derived classes
       of the base class Stage.*/
     void ChangeNextStage(StageType nextStage);
+		void RestartStage();
   
   private:
     void DeleteCurrentStage();
     void UpdateCurrentStage();
     
-    bool m_isUpdating;
+		bool m_isStart;
     bool m_isRestarting;
     bool m_isQuitting;
     StageType m_currentStage;

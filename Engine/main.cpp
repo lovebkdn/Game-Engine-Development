@@ -14,24 +14,24 @@
 #include "StageManager.h"
 #include "DebugTools.h"
 
-LRESULT	CALLBACK WndProc(HWND hWnd, /*Window handler*/
-												 UINT Msg, /*Msg type*/
+LRESULT	CALLBACK WndProc(HWND hWnd,		 /*Window handler*/
+												 UINT Msg,			 /*Msg type*/
 												 WPARAM wParam, /*Addtional datas*/
 												 LPARAM lParam)
 {
 	switch (Msg)
 	{
 		/*close the application*/
-		case WM_DESTROY:
-		{
-			/*close it*/
-			PostQuitMessage(WM_QUIT);
-			break;
-		}
+	case WM_DESTROY:
+	{
+		/*close it*/
+		PostQuitMessage(WM_QUIT);
+		break;
+	}
 
-		default:
-			/*process the leftover messages*/
-			return DefWindowProc(hWnd, Msg, wParam, lParam);
+	default:
+		/*process leftover messages*/
+		return DefWindowProc(hWnd, Msg, wParam, lParam);
 	}
 
 	return 0;
@@ -133,22 +133,29 @@ int WINAPI WinMain(HINSTANCE hInstance,
 													 NULL,
 													 hInstance,
 													 /*
-													   A pointer to a value to be passed to the window through the CREATESTRUCT structure (lpCreateParams member) 
+														 A pointer to a value to be passed to the window through the CREATESTRUCT structure (lpCreateParams member)
 														 pointed to by the lParam param of the WM_CREATE message.
 													 */
 													 NULL);
 
 	/*displays the window*/
 	ShowWindow(hWnd, nCmdShow);
-	/*update the window*/
+	
+	/*
+		https://msdn.microsoft.com/en-us/library/windows/desktop/dd145167(v=vs.85).aspx
+		The UpdateWindow function updates the client area of the specified window,
+		by sending a WM_PAINT message to the window if the window's update region is not empty. 
+		The function sends a WM_PAINT message directly to the window procedure of the specified window, 
+		bypassing the application queue. 
+		If the update region is empty, no message is sent.
+	*/
 	UpdateWindow(hWnd);
 
   StageManager stageManager;
   
   stageManager.Init();
   
-  while(!stageManager.IsQuitting())
-    stageManager.Update();
+  stageManager.Update();
   
   stageManager.Shutdown();
 
